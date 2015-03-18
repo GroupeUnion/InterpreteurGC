@@ -93,12 +93,24 @@ public class Bloc extends Instruction {
                         composant.add(composant_param);
                         for (int i = 0; i < param.size(); i++) {
                             instruction = param.get(i);
-                            Label label = (Label) instruction.produireComposant();
-                            composant_param.add(label);
-                            label.setForeground(Color.GRAY);
-                            label.setHaveMargin(false);
-                            label.setMargin(0, 0, 0, 0);
-                            label.setVisible(false);
+                            if(instruction.produireComposant() instanceof Label)
+                            {
+                                Label label = (Label) instruction.produireComposant();
+                                composant_param.add(label);
+                                label.setForeground(Color.GRAY);
+                                label.setHaveMargin(false);
+                                label.setMargin(0, 0, 0, 0);
+                                label.setVisible(false);
+                            }
+                            else
+                            {
+                                Composant c = (Composant) instruction.produireComposant();
+                                composant_param.add(c);
+                                c.setForeground(Color.GRAY);
+                                c.setHaveMargin(false);
+                                c.setMargin(0, 0, 0, 0);
+                                c.setVisible(false);
+                            }
                         }
                     }
                 }

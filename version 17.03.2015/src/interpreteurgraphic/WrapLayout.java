@@ -58,7 +58,7 @@ public class WrapLayout extends FlowLayout
 	*/
 	@Override
 	public Dimension preferredLayoutSize(Container target)
-	{
+	{            
 		return layoutSize(target, true);
 	}
 
@@ -157,7 +157,7 @@ public class WrapLayout extends FlowLayout
 		{
 			dim.width -= (hgap + 1);
 		}
-
+                target.revalidate();
 		return dim;
 	}
 	}

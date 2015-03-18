@@ -7,6 +7,7 @@ package interpreteurgraphic;
  */
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -26,9 +27,12 @@ public class Label extends JLabel {
     private StringBuilder valeur;
     private boolean haveMargin;
     private Color color;
+    private Dimension titleSize;
+    private Font pFont;
 
     public Label(StringBuilder valeur, String text) {
         super(valeur.toString());
+        this.pFont = new Font("times new roman", Font.PLAIN, 12);
         this.valeur = valeur;
         this.haveMargin = true;
         this.color = Color.getHSBColor((float) (136 / 256.0), (float) (240 / 256.0), (float) (256 / 256.0));
@@ -51,7 +55,11 @@ public class Label extends JLabel {
     @Override
     public void setName(String name) {
         super.setName(name); //To change body of generated methods, choose Tools | Templates.
-        setMargin(0, 40, 0, 0);
+        if (!"".equals(getName())) {
+            FontMetrics fontMetrics = this.getFontMetrics(pFont);
+            titleSize = new Dimension(fontMetrics.stringWidth(getName()) + 10, 30);
+        }
+        this.setMargin(0, 40, 0, 0);
     }
 
     public void addReferer(Component toReferer) {
@@ -68,14 +76,9 @@ public class Label extends JLabel {
     }
 
     public void setMargin(int top, int left, int bottom, int right) {
-        Font font = new Font("times new roman", Font.PLAIN, 12);
-        if (!"".equals(getName())) {
-            FontMetrics fontMetrics = this.getFontMetrics(font);
-            left = fontMetrics.stringWidth(getName()) + 10;
-        }
         Border colorBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, color);
-        Border textBorder = BorderFactory.createTitledBorder(colorBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, font, color);
-        Border margin = BorderFactory.createEmptyBorder(top, left, bottom, right);
+        Border textBorder = BorderFactory.createTitledBorder(colorBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, pFont, color);
+        Border margin = BorderFactory.createEmptyBorder(top, (titleSize!=null)? titleSize.width : left, bottom, right);
         Border combinaisonBorder = BorderFactory.createCompoundBorder(textBorder, margin);
         if (haveMargin) {
             Border margin2 = BorderFactory.createEmptyBorder(0, 40, 0, 0);

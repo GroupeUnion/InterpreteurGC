@@ -49,7 +49,9 @@ public class Fleche extends JPanel {
                 
                 Rectangle rectangleF = fromControl.getBounds();
                 for (Component toControl : entry.getValue()) {
-                    if (parent.isAncestorOf(toControl) && toControl.isVisible()) {
+                    if (parent.isAncestorOf(toControl) && toControl.isVisible() && 
+                            !((Container)fromControl).isAncestorOf(toControl) && 
+                            !((Container)toControl).isAncestorOf(fromControl)) {
                         Rectangle rectangleT = toControl.getBounds();
                         Point2D centreF = new Point2D.Double(rectangleF.getCenterX(), rectangleF.getCenterY());
                         Point2D centreT = new Point2D.Double(rectangleT.getCenterX(), rectangleT.getCenterY());

@@ -13,6 +13,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.Map;
@@ -30,7 +32,7 @@ import xmlstructure.Variable;
  *
  * @author Asus
  */
-public class Fenetre extends JFrame implements ComponentListener, ActionListener {
+public class Fenetre extends JFrame implements ComponentListener, ActionListener , AdjustmentListener{
 
     public static Fleche flechePanel = new Fleche();
     private SourcePanel sourcePanel;
@@ -59,6 +61,8 @@ public class Fenetre extends JFrame implements ComponentListener, ActionListener
         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.declarationScrollPane.setLocation(300, 15);
         this.declarationScrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        this.declarationScrollPane.getHorizontalScrollBar().addAdjustmentListener(this);
+        this.declarationScrollPane.getVerticalScrollBar().addAdjustmentListener(this);
         
         this.mainPanel = new JPanel();
         this.mainPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -68,10 +72,13 @@ public class Fenetre extends JFrame implements ComponentListener, ActionListener
         this.mainScrollPane = new JScrollPane(this.mainPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.mainScrollPane.setOpaque(false);
-        this.mainScrollPane.setLocation(300, 165);
-        Border margin = BorderFactory.createMatteBorder(1, 0, 0, 0, Color.getHSBColor((float) (136 / 256.0), (float) (240 / 256.0), (float) (256 / 256.0)));
+        this.mainScrollPane.setLocation(300, 265);
+        Border margin = BorderFactory.createMatteBorder(3, 0, 0, 0, Color.getHSBColor((float) (136 / 256.0), (float) (240 / 256.0), (float) (256 / 256.0)));
         Border textBorder = BorderFactory.createTitledBorder(margin, "Execution", TitledBorder.CENTER, TitledBorder.TOP, this.getFont(), Color.WHITE);
         this.mainScrollPane.setBorder(textBorder);
+        
+        this.mainScrollPane.getHorizontalScrollBar().addAdjustmentListener(this);
+        this.mainScrollPane.getVerticalScrollBar().addAdjustmentListener(this);
         
         this.buttonNext = new JButton("Suivant");
         this.buttonNext.setSize(new Dimension(120, 25));
@@ -118,12 +125,11 @@ public class Fenetre extends JFrame implements ComponentListener, ActionListener
     @Override
     public void componentResized(ComponentEvent e) {
         if (this.mainPanel != null) {
-            this.mainScrollPane.setSize(this.getWidth() - this.mainScrollPane.getX()-12, this.getHeight() - 200);
-            this.declarationScrollPane.setSize(this.getWidth() - this.declarationScrollPane.getX()-12, 150);
+            this.mainScrollPane.setSize(this.getWidth() - this.mainScrollPane.getX()-15, this.getHeight() - 300);
+            this.declarationScrollPane.setSize(this.getWidth() - this.declarationScrollPane.getX()-15, 250);
             Fenetre.flechePanel.setSize(this.getWidth() - this.flechePanel.getX(), this.getHeight());
             this.getContentPane().revalidate();
             this.getContentPane().repaint();
-
         }
         if (this.sourcePanel != null) {
             this.sourcePanel.setSize(this.mainScrollPane.getX()+1, this.getHeight() - 85);
@@ -193,7 +199,7 @@ public class Fenetre extends JFrame implements ComponentListener, ActionListener
                             declarationPanel.add(instruction.produireComposant());
                         }
                     }
-                    instruction.produireComposant().setVisible(true);
+                    instruction.produireComposant().setVisible(true);     
                 }
                 return true;
             }
@@ -219,4 +225,11 @@ public class Fenetre extends JFrame implements ComponentListener, ActionListener
             }
         }
     }
+
+    @Override
+    public void adjustmentValueChanged(AdjustmentEvent e) {
+        componentResized(null);
+    }
+    
+   
 }

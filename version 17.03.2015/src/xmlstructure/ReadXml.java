@@ -282,7 +282,7 @@ public class ReadXml {
                 System.out.println("Code d'erreur " + exitVal);
             } else {
                 System.out.println("Chargement réussi !!! ");
-                Fenetre fenetre = new Fenetre("Ma fenetre", 1040, 480, readxml.getHashExecution());
+                Fenetre fenetre = new Fenetre("Ma fenetre", 1040, 580, readxml.getHashExecution());
                 fenetre.chargement(args);
                 fenetre.revalidate();
             }

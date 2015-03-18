@@ -2,7 +2,9 @@ package xmlstructure;
 
 import interpreteurgraphic.Composant;
 import interpreteurgraphic.Label;
+import interpreteurgraphic.WrapLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BoxLayout;
@@ -71,16 +73,21 @@ public class Structure extends Variable {
     @Override
     public Component produireComposant() {
         if (composant == null) {
-            composant = new Composant(getType() + " " + getNom());
-            composant.setLayout(new BoxLayout(composant, BoxLayout.Y_AXIS));
+            composant = new Composant(getType() + " " + getNom());            
+            composant.setLayout(new WrapLayout(FlowLayout.LEFT));
             for (int i = 0; i < listMembres.size(); i++) {
                 Variable variable = listMembres.get(i);
                 Component component = variable.produireComposant();
                 if (component instanceof Label) {
                     ((Label) component).setHaveMargin(false);
+                    ((Label) component).setMargin(0, 0, 0, 0);
+                } else {
+                    ((Composant) component).setHaveMargin(false);
+                    ((Composant) component).setMargin(0, 0, 0, 0);
                 }
                 composant.add(component);
             }
+            composant.setBordBold(true);
         }
         return composant;
     }
